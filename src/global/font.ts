@@ -1,5 +1,5 @@
 export const font = {
     fonts: {
-        title700: 'Righteous_700Regular' 
+        title400: 'Righteous_400Regular',
     }
 }
