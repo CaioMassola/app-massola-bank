@@ -10,7 +10,6 @@ export const AppRoutes = () => {
     <Navigator
       screenOptions={
           {
-              cardStyle:{backgroundColor: 'blue'},
               headerMode:"screen"
           }
         }
