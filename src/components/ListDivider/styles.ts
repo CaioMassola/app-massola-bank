@@ -5,6 +5,5 @@ export const styles = StyleSheet.create({
     height: 1,
     marginTop: 50,
     width: '100%',
-    backgroundColor: 'black',
   },
 });

@@ -1,7 +1,7 @@
 export const pt = {
     login: {
         welcome: 'Bem-Vindo',
-        placeholderEmail: 'email...', 
+        placeholderEmail: 'email...',
         placeholderPassword: 'senha...',
         emailRequired: 'O email é obrigatório!',
         typeEmail: 'Digite um email válido',
@@ -14,7 +14,7 @@ export const pt = {
     }
 }
 
-export const en= {
+export const en = {
     login: {
         welcome: 'Welcome',
         placeholderEmail: 'email...',

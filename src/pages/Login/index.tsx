@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Input } from 'react-native-elements';
+import React, { useEffect, useState } from 'react';
+import { Icon, Input } from 'react-native-elements';
 import { View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView, TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
@@ -19,7 +19,7 @@ import * as yup from 'yup';
 import * as Localization from 'expo-localization';
 import i18n from 'i18n-js';
 
-import {pt, en} from '../../global/localization'
+import { pt, en } from '../../global/localization'
 
 const google = require('../../assets/google.jpg');
 
@@ -29,24 +29,25 @@ type Inputs = {
 }
 
 export const Login = () => {
-  
-i18n.fallbacks = true;
-i18n.translations = { pt, en };
-i18n.locale = Localization.locale;
+
+  i18n.fallbacks = true;
+  i18n.translations = { pt, en };
+  i18n.locale = Localization.locale;
 
   const fieldsValidationSchema = yup.object().shape({
     email: yup
-    .string()
-    .required(i18n.t('login.emailRequired'))
-    .email(i18n.t('login.typeEmail')),
+      .string()
+      .required(i18n.t('login.emailRequired'))
+      .email(i18n.t('login.typeEmail')),
     password: yup
-    .string()
-    .required(i18n.t('login.passwordRequired'))
-    .min(6, i18n.t('login.minPassword'))
+      .string()
+      .required(i18n.t('login.passwordRequired'))
+      .min(6, i18n.t('login.minPassword'))
   })
 
   const [visibilityPassword, setVisibilityPassword] = useState<boolean>(false);
-  const { control, handleSubmit, formState: { errors}, register, setValue, clearErrors } = useForm<Inputs>({resolver: yupResolver(fieldsValidationSchema)})
+  const [dark_mode, setDarkMode] = useState<boolean>(false);
+  const { control, handleSubmit, formState: { errors }, register, setValue, clearErrors } = useForm<Inputs>({ resolver: yupResolver(fieldsValidationSchema) })
 
   const onSubmit = (data: any) => {
     console.log(data)
@@ -56,12 +57,38 @@ i18n.locale = Localization.locale;
     !visibilityPassword ? setVisibilityPassword(true) : setVisibilityPassword(false);
   }
 
+  useEffect(() => {
+    console.log(dark_mode)
+  }, [dark_mode])
 
   return (
     <Background>
       <SafeAreaView>
         <ScrollView>
           <View style={styles.container}>
+            <View style={styles.config}>
+              <Icon
+                type='ionicon'
+                name=''
+                color='white'
+                style={{ marginTop: 15, marginLeft: 10 }}
+                tvParallaxProperties={null}
+              />
+              <TouchableOpacity
+                onPress={() => {
+                  dark_mode ? setDarkMode(false) : setDarkMode(true);
+                }}
+              >
+                <Icon
+                  type={dark_mode ? 'ionicon' : 'font-awesome-5'}
+                  name={dark_mode ? 'sunny-sharp' : 'moon'}
+                  color='white'
+                  solid={true}
+                  style={{ marginTop: 15, marginRight: 20 }}
+                  tvParallaxProperties={null}
+                />
+              </TouchableOpacity>
+            </View>
             <View style={styles.viewIcon}>
               <Logo />
             </View>
@@ -98,7 +125,7 @@ i18n.locale = Localization.locale;
                       }
                     }}
                     leftIcon={{
-                      type: 'material', name:'lock', color: 'white', onPress: () => {
+                      type: 'material', name: 'lock', color: 'white', onPress: () => {
                         changeVisibilityPassword()
                       }
                     }}
@@ -129,7 +156,7 @@ i18n.locale = Localization.locale;
               <Text style={styles.createAnAccount}>{i18n.t('login.createAnAccount')}</Text>
             </TouchableOpacity>
             <View style={{ marginTop: 25 }}>
-              <ListDivider />
+              <ListDivider color={dark_mode ? '#999999' : 'black'} />
             </View>
             <View style={styles.googleView}>
               <Text style={styles.textGoogle}>{i18n.t('login.orSocialLogin')}</Text>

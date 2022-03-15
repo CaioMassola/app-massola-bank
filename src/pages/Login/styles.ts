@@ -8,11 +8,19 @@ export const styles = StyleSheet.create({
   },
   viewIcon: {
     alignItems: 'center',
-    top: getStatusBarHeight() + 30,
+    top: 15,
+  },
+  config: {
+    marginTop: 15,
+    height: 60,
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+
   },
   texto: {
     fontSize: 32,
-    marginTop: '25%',
+    marginTop: 40,
     textAlign: 'center',
     color: 'white',
     fontFamily: font.fonts.title400,
