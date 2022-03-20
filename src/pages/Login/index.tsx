@@ -4,7 +4,7 @@ import { View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView, TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
-import { Background } from '../../components/Background';
+import  Background  from '../../components/Background';
 import { ButtonIcon } from '../../components/ButtonIcon';
 import { ListDivider } from '../../components/ListDivider';
 
@@ -20,6 +20,9 @@ import * as Localization from 'expo-localization';
 import i18n from 'i18n-js';
 
 import { pt, en } from '../../global/localization'
+import { connect } from 'react-redux';
+import { AppDispatch } from '../../redux/store';
+import { setDarkMode } from '../../redux/actions/dark-mode-action';
 
 const google = require('../../assets/google.jpg');
 
@@ -28,7 +31,14 @@ type Inputs = {
   password: string;
 }
 
-export const Login = () => {
+type ILogin = {
+  dark_mode: boolean;
+  setShowDarkMode: (value: boolean) => void;
+}
+
+const Login = (props: ILogin) => {
+
+  const {dark_mode, setShowDarkMode} = props
 
   i18n.fallbacks = true;
   i18n.translations = { pt, en };
@@ -46,7 +56,7 @@ export const Login = () => {
   })
 
   const [visibilityPassword, setVisibilityPassword] = useState<boolean>(false);
-  const [dark_mode, setDarkMode] = useState<boolean>(false);
+  const [dark_mode_value, setDarkMode] = useState<boolean>(dark_mode);
   const { control, handleSubmit, formState: { errors }, register, setValue, clearErrors } = useForm<Inputs>({ resolver: yupResolver(fieldsValidationSchema) })
 
   const onSubmit = (data: any) => {
@@ -57,12 +67,15 @@ export const Login = () => {
     !visibilityPassword ? setVisibilityPassword(true) : setVisibilityPassword(false);
   }
 
-  useEffect(() => {
-    console.log(dark_mode)
-  }, [dark_mode])
+  const _handle_dark_mode = () => {
+
+    !dark_mode_value ? setDarkMode(true) : setDarkMode(false);
+    !dark_mode_value ? setShowDarkMode(true) : setShowDarkMode(false);
+
+  }
 
   return (
-    <Background>
+    <Background dark_mode={dark_mode}>
       <SafeAreaView>
         <ScrollView>
           <View style={styles.container}>
@@ -76,12 +89,12 @@ export const Login = () => {
               />
               <TouchableOpacity
                 onPress={() => {
-                  dark_mode ? setDarkMode(false) : setDarkMode(true);
+                  _handle_dark_mode();
                 }}
               >
                 <Icon
-                  type={dark_mode ? 'ionicon' : 'font-awesome-5'}
-                  name={dark_mode ? 'sunny-sharp' : 'moon'}
+                  type={dark_mode_value ? 'ionicon' : 'font-awesome-5'}
+                  name={dark_mode_value ? 'sunny-sharp' : 'moon'}
                   color='white'
                   solid={true}
                   style={{ marginTop: 15, marginRight: 20 }}
@@ -156,7 +169,7 @@ export const Login = () => {
               <Text style={styles.createAnAccount}>{i18n.t('login.createAnAccount')}</Text>
             </TouchableOpacity>
             <View style={{ marginTop: 25 }}>
-              <ListDivider color={dark_mode ? '#999999' : 'black'} />
+              <ListDivider color={dark_mode_value ? '#999999' : 'black'} />
             </View>
             <View style={styles.googleView}>
               <Text style={styles.textGoogle}>{i18n.t('login.orSocialLogin')}</Text>
@@ -179,3 +192,17 @@ export const Login = () => {
     </Background>
   )
 }
+
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
+  setShowDarkMode: (value: boolean) => {
+    dispatch(setDarkMode(value));
+  },
+});
+
+const Props = (state: any) => {
+  const  dark_mode = state.darkModeReducer;
+
+  return dark_mode ;
+};
+
+export default connect(Props, mapDispatchToProps)(Login);

@@ -11,6 +11,7 @@
     "@expo-google-fonts/inter": "^0.2.2",
     "@expo-google-fonts/righteous": "^0.2.0",
     "@hookform/resolvers": "^2.8.8",
+    "@react-native-async-storage/async-storage": "~1.15.0",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/stack": "^6.0.11",
     "expo": "~43.0.2",
@@ -33,6 +34,9 @@
     "react-native-screens": "~3.8.0",
     "react-native-svg": "X.X.X",
     "react-native-web": "0.17.1",
+    "react-redux": "^7.2.6",
+    "redux": "^4.1.2",
+    "redux-persist": "^6.0.0",
     "yup": "^0.32.11"
   },
   "devDependencies": {

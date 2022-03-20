@@ -1,8 +1,12 @@
 import { dark_mode } from "./enviroments";
 
 export const color = {
-    colors: {
-        primary: dark_mode ? '#000000' : '#0cbae0',
-        secondary: dark_mode ? '#1a1a1a' : '#010101'
+    light: {
+        primary: '#0cbae0',
+        secondary:'#010101'
+    },
+    dark: {
+        primary: '#000000',
+        secondary: '#1a1a1a'
     }
 }
