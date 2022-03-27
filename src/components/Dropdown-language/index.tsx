@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     View,
     Text,
@@ -11,6 +11,7 @@ import { color } from '../../global/color';
 import { ILanguage, setLanguageAction } from '../../redux/actions/language-action';
 import { AppDispatch } from '../../redux/store';
 import i18n from 'i18n-js';
+import * as Localization from 'expo-localization';
 
 import { styles } from './styles';
 
@@ -26,7 +27,7 @@ const DropDownLanguage = (props: IDropDown) => {
     let color_value = isColor ? color.dark.primary : color.light.primary
 
     i18n.fallbacks = true;
-    i18n.locale = language_redux?.surname!!
+    i18n.locale = language_redux ? language_redux.surname : Localization.locale
 
     const languages = [
         {
