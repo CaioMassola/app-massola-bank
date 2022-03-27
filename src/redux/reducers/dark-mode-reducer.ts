@@ -1,4 +1,4 @@
-import { DARK_MODE, DARK_MODE_COLOR } from "../actions/actionTypes";
+import { DARK_MODE} from "../actions/actionTypes";
 
 type IAction = {
     type: string;
@@ -11,8 +11,6 @@ const initialState = {
 
 const darkModeReducer = (state = initialState, action: IAction) => {
     const {payload} = action;
-
-    // console.log('here', payload)
 
     switch(action.type) {
         case DARK_MODE: {

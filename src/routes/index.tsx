@@ -10,28 +10,21 @@ import { connect } from 'react-redux';
 
 type IApp = {
   setShowDarkMode?: (value: boolean) => void;
-  dark_mode?: boolean;
+  dark_mode?: {
+    dark_mode: boolean
+  }
+  language_redux?: {
+    language_redux: string
+  }
 }
 
 const Routes = (props: IApp) => {
 
   return(
     <NavigationContainer>
-       <Login dark_mode={props.dark_mode!!} setShowDarkMode={() => props.dark_mode} />
+       <Login />        
     </NavigationContainer>
   )
 }
 
-const mapStateToProps= (state: any) => {
-  const dark_mode = state.darkModeReducer;
-
-  return dark_mode
-}
-
-const mapDispatchToProps = (dispatch: AppDispatch) => ({
-  setShowDarkMode: (value: boolean) => {
-    dispatch(setDarkMode(value))
-  }
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Routes)
+export default Routes

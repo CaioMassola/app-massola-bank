@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: font.fonts.title400,
     textAlign: 'center',
-    marginRight: 2
+    marginRight: 10
   },
   iconWrapper: {
     width: 40,

@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
     fontFamily: font.fonts.title400,
   },
   inputView: {
-    marginTop: 50,
+    marginTop: 10,
     width: '90%',
     marginLeft: 15
   },
@@ -44,13 +44,13 @@ export const styles = StyleSheet.create({
     textAlign: 'left'
   },
   createAnAccount: {
-    marginTop: 35,
+    marginTop: 20,
     fontFamily: font.fonts.title400,
     color: 'white',
     textAlign: 'center'
   },
   googleView: {
-    marginTop: -1
+    marginTop: -8
   },
   textGoogle: {
     fontSize: 32,

@@ -4,15 +4,15 @@ import { View } from 'react-native';
 import { connect } from 'react-redux';
 import { color } from '../../global/color';
 
+
 import { styles } from './styles';
 
 type Props = {
   children: ReactNode;
-  dark_mode: boolean
+  dark_mode?: boolean
 }
 
  const Background = ({ children, dark_mode }: Props) => {
-  
   
   const { primary, secondary } = dark_mode ? color.dark : color.light
   
@@ -26,10 +26,10 @@ type Props = {
   )
 }
 
-const Props = (state: any) => {
+const props = (state: any) => {
   const  dark_mode = state.darkModeReducer;
 
   return dark_mode ;
 };
 
-export default connect(Props)(Background);
+export default connect(props)(Background);

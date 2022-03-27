@@ -9,6 +9,7 @@ const persistConfig = {
   storage: AsyncStorage,
   whitelist: [
     'darkModeReducer',
+    'languageReducer',
   ],
 };
 
