@@ -1,86 +1,98 @@
-import React, { useState } from 'react';
-import { Icon, Input } from 'react-native-elements';
-import { View, Text } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import React, { useState } from "react";
+import { Icon, Input } from "react-native-elements";
+import { View, Text } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 
-import Background from '../../components/Background';
-import { ButtonIcon } from '../../components/ButtonIcon';
-import { ListDivider } from '../../components/ListDivider';
+import Background from "../../components/Background";
+import { ButtonIcon } from "../../components/ButtonIcon";
+import { ListDivider } from "../../components/ListDivider";
 
-import Logo from '../../assets/svg/Vector.svg'
-import { font } from '../../global/font';
-import { styles } from './styles';
+import Logo from "../../assets/svg/Vector.svg";
+import { font } from "../../global/font";
+import { styles } from "./styles";
 
-import { useForm, Controller } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
-import * as Localization from 'expo-localization';
-import i18n from 'i18n-js';
+import * as Localization from "expo-localization";
+import i18n from "i18n-js";
 
-import { pt, en } from '../../global/localization'
-import { connect } from 'react-redux';
-import { AppDispatch } from '../../redux/store';
-import { setDarkMode } from '../../redux/actions/dark-mode-action';
-import DropDownLanguage from '../../components/Dropdown-language';
-import { ILanguage } from '../../redux/actions/language-action';
+import { pt, en } from "../../global/localization";
+import { connect } from "react-redux";
+import { AppDispatch } from "../../redux/store";
+import { setDarkMode } from "../../redux/actions/dark-mode-action";
+import DropDownLanguage from "../../components/Dropdown-language";
+import { ILanguage } from "../../redux/actions/language-action";
+import { useNavigation } from "@react-navigation/native";
 
-const google = require('../../assets/google.png');
+const google = require("../../assets/google.png");
 
 type Inputs = {
   email: string;
   password: string;
-}
+};
 
 type ILogin = {
   language_redux: {
-    language_redux: ILanguage
-  }
+    language_redux: ILanguage;
+  };
   dark_mode?: {
-    dark_mode: boolean
+    dark_mode: boolean;
   };
   setShowDarkMode?: (value: boolean) => void;
   setShowLanguage?: (value: ILanguage) => void;
-}
+};
 
 const Login = (props: ILogin) => {
-  const { dark_mode, setShowDarkMode, language_redux, setShowLanguage } = props
+  const { dark_mode, setShowDarkMode, language_redux, setShowLanguage } = props;
+
+  const navigation = useNavigation();
 
   i18n.fallbacks = true;
   i18n.translations = { pt, en };
-  i18n.locale = language_redux.language_redux ? language_redux.language_redux.surname : Localization.locale;
+  i18n.locale = language_redux.language_redux
+    ? language_redux.language_redux.surname
+    : Localization.locale;
 
   const fieldsValidationSchema = yup.object().shape({
     email: yup
       .string()
-      .required(i18n.t('login.emailRequired'))
-      .email(i18n.t('login.typeEmail')),
+      .required(i18n.t("login.emailRequired"))
+      .email(i18n.t("login.typeEmail")),
     password: yup
       .string()
-      .required(i18n.t('login.passwordRequired'))
-      .min(6, i18n.t('login.minPassword'))
-  })
+      .required(i18n.t("login.passwordRequired"))
+      .min(6, i18n.t("login.minPassword")),
+  });
 
   const [visibilityPassword, setVisibilityPassword] = useState<boolean>(false);
-  const [dark_mode_value, setDarkMode] = useState<boolean>(dark_mode ? dark_mode.dark_mode : false);
-  const { control, handleSubmit, formState: { errors }, register, setValue, clearErrors } = useForm<Inputs>({ resolver: yupResolver(fieldsValidationSchema) })
+  const [dark_mode_value, setDarkMode] = useState<boolean>(
+    dark_mode ? dark_mode.dark_mode : false
+  );
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>({ resolver: yupResolver(fieldsValidationSchema) });
 
   const onSubmit = (data: any) => {
-    console.log(data)
-  }
+    console.log(data);
+  };
 
   const changeVisibilityPassword = () => {
-    !visibilityPassword ? setVisibilityPassword(true) : setVisibilityPassword(false);
-  }
+    !visibilityPassword
+      ? setVisibilityPassword(true)
+      : setVisibilityPassword(false);
+  };
 
   const _handle_dark_mode = () => {
-
     !dark_mode_value ? setDarkMode(true) : setDarkMode(false);
     if (setShowDarkMode) {
       !dark_mode_value ? setShowDarkMode(true) : setShowDarkMode(false);
     }
-  }
+  };
 
   return (
     <Background dark_mode={dark_mode?.dark_mode}>
@@ -89,19 +101,26 @@ const Login = (props: ILogin) => {
           <View style={styles.container}>
             <View style={styles.config}>
               <View style={{ marginLeft: 15 }}>
-                <DropDownLanguage isColor={dark_mode?.dark_mode} setShowLanguage={() => ''} />
+                <DropDownLanguage
+                  isColor={dark_mode?.dark_mode}
+                  setShowLanguage={() => ""}
+                />
               </View>
               <TouchableOpacity
                 onPress={() => {
                   _handle_dark_mode();
                 }}
                 accessible
-                accessibilityLabel={dark_mode?.dark_mode ? i18n.t('login.themeLight') : i18n.t('login.themeDark')}
+                accessibilityLabel={
+                  dark_mode?.dark_mode
+                    ? i18n.t("login.themeLight")
+                    : i18n.t("login.themeDark")
+                }
               >
                 <Icon
-                  type={dark_mode_value ? 'ionicon' : 'font-awesome-5'}
-                  name={dark_mode_value ? 'sunny-sharp' : 'moon'}
-                  color='white'
+                  type={dark_mode_value ? "ionicon" : "font-awesome-5"}
+                  name={dark_mode_value ? "sunny-sharp" : "moon"}
+                  color="white"
                   solid={true}
                   style={{ marginTop: 15, marginRight: 20 }}
                   tvParallaxProperties={null}
@@ -109,15 +128,14 @@ const Login = (props: ILogin) => {
               </TouchableOpacity>
             </View>
             <View style={styles.viewIcon}>
-              <Logo
-                accessible
-                accessibilityLabel={i18n.t('login.logo')} />
+              <Logo accessible accessibilityLabel={i18n.t("login.logo")} />
             </View>
             <Text
               style={styles.texto}
               accessible
-              accessibilityLabel={i18n.t('login.welcome')}>
-              {i18n.t('login.welcome')}
+              accessibilityLabel={i18n.t("login.welcome")}
+            >
+              {i18n.t("login.welcome")}
             </Text>
             <View style={styles.inputView}>
               <Controller
@@ -125,17 +143,28 @@ const Login = (props: ILogin) => {
                 control={control}
                 render={(props) => (
                   <Input
-                    placeholder={i18n.t('login.placeholderEmail')}
-                    inputStyle={{ color: 'white', fontFamily: font.fonts.title400 }}
-                    keyboardType={'email-address'}
-                    leftIcon={{ type: 'material', name: 'email', color: 'white' }}
-                    errorStyle={{ color: '#ff4d4d', fontSize: 16, fontFamily: font.fonts.title400 }}
+                    placeholder={i18n.t("login.placeholderEmail")}
+                    inputStyle={{
+                      color: "white",
+                      fontFamily: font.fonts.title400,
+                    }}
+                    keyboardType={"email-address"}
+                    leftIcon={{
+                      type: "material",
+                      name: "email",
+                      color: "white",
+                    }}
+                    errorStyle={{
+                      color: "#ff4d4d",
+                      fontSize: 16,
+                      fontFamily: font.fonts.title400,
+                    }}
                     errorMessage={errors.email?.message}
                     onChangeText={(value) => {
-                      props.field.onChange(value)
+                      props.field.onChange(value);
                     }}
                     accessible
-                    accessibilityLabel={i18n.t('login.placeholderEmail')}
+                    accessibilityLabel={i18n.t("login.placeholderEmail")}
                   />
                 )}
               />
@@ -144,81 +173,98 @@ const Login = (props: ILogin) => {
                 control={control}
                 render={(props) => (
                   <Input
-                    placeholder={i18n.t('login.placeholderPassword')}
-                    inputStyle={{ color: 'white', fontFamily: font.fonts.title400 }}
+                    placeholder={i18n.t("login.placeholderPassword")}
+                    inputStyle={{
+                      color: "white",
+                      fontFamily: font.fonts.title400,
+                    }}
                     secureTextEntry={!visibilityPassword ? true : false}
                     rightIcon={{
-                      type: 'material',
-                      name: `${!visibilityPassword ? 'visibility-off' : 'visibility'}`,
-                      color: 'white', onPress: () => {
-                        changeVisibilityPassword()
-                      }
+                      type: "material",
+                      name: `${
+                        !visibilityPassword ? "visibility-off" : "visibility"
+                      }`,
+                      color: "white",
+                      onPress: () => {
+                        changeVisibilityPassword();
+                      },
                     }}
                     leftIcon={{
-                      type: 'material', name: 'lock', color: 'white', onPress: () => {
-                        changeVisibilityPassword()
-                      }
+                      type: "material",
+                      name: "lock",
+                      color: "white",
+                      onPress: () => {
+                        changeVisibilityPassword();
+                      },
                     }}
-                    errorStyle={{ color: '#ff4d4d', fontSize: 16, fontFamily: font.fonts.title400 }}
+                    errorStyle={{
+                      color: "#ff4d4d",
+                      fontSize: 16,
+                      fontFamily: font.fonts.title400,
+                    }}
                     errorMessage={errors.password?.message}
                     onChangeText={(value) => {
-                      props.field.onChange(value)
+                      props.field.onChange(value);
                     }}
                     accessible
-                    accessibilityLabel={i18n.t('login.placeholderPassword')}
+                    accessibilityLabel={i18n.t("login.placeholderPassword")}
                   />
                 )}
               />
             </View>
-            <View style={{ alignItems: 'center' }}>
+            <View style={{ alignItems: "center" }}>
               <View style={styles.buttonView}>
                 <ButtonIcon
-                  color='white'
-                  type='material'
-                  icon='login'
+                  color="white"
+                  type="material"
+                  icon="login"
                   height={40}
                   onPress={handleSubmit(onSubmit)}
-                  title={i18n.t('login.btnLogin')}
+                  title={i18n.t("login.btnLogin")}
                   img={0}
-                  accessibilityLabel={i18n.t('login.btnLogin')}
+                  accessibilityLabel={i18n.t("login.btnLogin")}
                 />
               </View>
             </View>
             <TouchableOpacity
-              onPress={() => console.log('esqueci senha')}
+              onPress={() => console.log("esqueci senha")}
               accessible
-              accessibilityLabel={i18n.t('login.forgotPassword')}
+              accessibilityLabel={i18n.t("login.forgotPassword")}
             >
-              <Text style={styles.createAnAccount}>{i18n.t('login.forgotPassword')}</Text>
+              <Text style={styles.createAnAccount}>
+                {i18n.t("login.forgotPassword")}
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => console.log('criarconta')}
+              onPress={() => navigation.navigate("CreateAccount")}
               accessible
-              accessibilityLabel={i18n.t('login.createAnAccount')}
+              accessibilityLabel={i18n.t("login.createAnAccount")}
             >
-              <Text style={styles.createAnAccount}>{i18n.t('login.createAnAccount')}</Text>
+              <Text style={styles.createAnAccount}>
+                {i18n.t("login.createAnAccount")}
+              </Text>
             </TouchableOpacity>
             <View style={{ marginTop: 25 }}>
-              <ListDivider color={dark_mode_value ? '#999999' : 'black'} />
+              <ListDivider color={dark_mode_value ? "#999999" : "black"} />
             </View>
             <View style={styles.googleView}>
               <Text
                 style={styles.textGoogle}
                 accessible
-                accessibilityLabel={i18n.t('login.orSocialLogin')}
+                accessibilityLabel={i18n.t("login.orSocialLogin")}
               >
-                {i18n.t('login.orSocialLogin')}
+                {i18n.t("login.orSocialLogin")}
               </Text>
-              <View style={{ alignItems: 'center' }}>
+              <View style={{ alignItems: "center" }}>
                 <View style={styles.buttonView}>
                   <ButtonIcon
-                    color='white'
+                    color="white"
                     img={google}
                     height={40}
-                    onPress={() => console.log('Google')}
-                    title={i18n.t('login.btnGoogle')}
-                    icon={''}
-                    accessibilityLabel={i18n.t('login.accGoogle')}
+                    onPress={() => console.log("Google")}
+                    title={i18n.t("login.btnGoogle")}
+                    icon={""}
+                    accessibilityLabel={i18n.t("login.accGoogle")}
                   />
                 </View>
               </View>
@@ -227,8 +273,8 @@ const Login = (props: ILogin) => {
         </ScrollView>
       </SafeAreaView>
     </Background>
-  )
-}
+  );
+};
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
   setShowDarkMode: (value: boolean) => {
@@ -242,8 +288,8 @@ const props = (state: any) => {
 
   const props = {
     dark_mode,
-    language_redux
-  }
+    language_redux,
+  };
   return props;
 };
 
