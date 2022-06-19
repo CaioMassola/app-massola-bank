@@ -19,6 +19,17 @@ export const pt = {
         themeDark: 'Tema Escuro',
         themeLight: 'Tema Claro',
         accGoogle: 'Entre com Google',
+    },
+    createAccount: {
+        label: 'Criar uma conta',
+        cpfRequired: 'CPF é obrigatório!',
+        smartphoneRequired: 'Numéro de telefone é obrigatório!',
+        placeholderEmail: 'email...',
+        placeholderPassword: 'senha...',
+        emailRequired: 'O email é obrigatório!',
+        typeEmail: 'Digite um email válido',
+        passwordRequired: 'A senha é obrigatória!',
+        minPassword: 'A senha deve conter pelo menos 6 dígitos',
     }
 }
 
@@ -43,5 +54,16 @@ export const en = {
         themeDark: 'Dark Mode',
         themeLight: 'Light Mode',
         accGoogle: 'Login with Google',
+    },
+    createAccount: {
+        label: 'Create Account',
+        cpfRequired: 'CPF is required!',
+        smartphoneRequired: 'Smartphone is required!',
+        placeholderEmail: 'email...',
+        placeholderPassword: 'password...',
+        emailRequired: 'Email is required!',
+        typeEmail: 'Enter a valid email address!',
+        passwordRequired: 'Password is required!',
+        minPassword: 'The password must contain at least 6 digits',
     }
 }

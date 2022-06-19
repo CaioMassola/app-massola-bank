@@ -7,6 +7,7 @@ import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import Background from "../../components/Background";
 import { ButtonIcon } from "../../components/ButtonIcon";
 import { ListDivider } from "../../components/ListDivider";
+import DropDownLanguage from "../../components/Dropdown-language";
 
 import Logo from "../../assets/svg/Vector.svg";
 import { font } from "../../global/font";
@@ -23,13 +24,12 @@ import { pt, en } from "../../global/localization";
 import { connect } from "react-redux";
 import { AppDispatch } from "../../redux/store";
 import { setDarkMode } from "../../redux/actions/dark-mode-action";
-import DropDownLanguage from "../../components/Dropdown-language";
 import { ILanguage } from "../../redux/actions/language-action";
 import { useNavigation } from "@react-navigation/native";
 
 const google = require("../../assets/google.png");
 
-type Inputs = {
+type IForms = {
   email: string;
   password: string;
 };
@@ -75,9 +75,9 @@ const Login = (props: ILogin) => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>({ resolver: yupResolver(fieldsValidationSchema) });
+  } = useForm<IForms>({ resolver: yupResolver(fieldsValidationSchema) });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: IForms) => {
     console.log(data);
   };
 

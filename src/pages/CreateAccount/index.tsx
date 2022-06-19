@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Icon, Input } from "react-native-elements";
-import { View, Text } from "react-native";
+import { View, Text, Keyboard, KeyboardAvoidingView, Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 
 import Background from "../../components/Background";
 import { ButtonIcon } from "../../components/ButtonIcon";
 import { ListDivider } from "../../components/ListDivider";
+import DropDownLanguage from "../../components/Dropdown-language";
 
 import Logo from "../../assets/svg/Vector.svg";
 import { font } from "../../global/font";
@@ -22,9 +23,13 @@ import i18n from "i18n-js";
 import { pt, en } from "../../global/localization";
 import { connect } from "react-redux";
 import { ILanguage } from "../../redux/actions/language-action";
+import { AppDispatch } from "../../redux/store";
+import { setDarkMode } from "../../redux/actions/dark-mode-action";
 
 type Inputs = {
   email: string;
+  cpf: string;
+  smartphone: number;
   password: string;
 };
 
@@ -51,12 +56,22 @@ const CreateAccount = (props: ICreateAccount) => {
   const fieldsValidationSchema = yup.object().shape({
     email: yup
       .string()
-      .required(i18n.t("login.emailRequired"))
-      .email(i18n.t("login.typeEmail")),
+      .required(i18n.t("createAccount.emailRequired"))
+      .email(i18n.t("createAccount.typeEmail")),
+    cpf: yup
+      .string()
+      .required(i18n.t("createAccount.cpfRequired"))
+      .min(11)
+      .max(11),
+    smartphone: yup
+      .number()
+      .required(i18n.t("createAccount.smartphoneRequired"))
+      .min(11)
+      .max(11),
     password: yup
       .string()
-      .required(i18n.t("login.passwordRequired"))
-      .min(6, i18n.t("login.minPassword")),
+      .required(i18n.t("createAccount.passwordRequired"))
+      .min(6, i18n.t("createAccount.login.minPassword")),
   });
 
   const [visibilityPassword, setVisibilityPassword] = useState<boolean>(false);
@@ -73,14 +88,61 @@ const CreateAccount = (props: ICreateAccount) => {
     console.log(data);
   };
 
+  const _handle_dark_mode = () => {
+    !dark_mode_value ? setDarkMode(true) : setDarkMode(false);
+    if (setShowDarkMode) {
+      !dark_mode_value ? setShowDarkMode(true) : setShowDarkMode(false);
+    }
+  };
+
   return (
     <Background dark_mode={dark_mode?.dark_mode}>
-      <SafeAreaView>
-        <Text>Ola</Text>
+      <SafeAreaView
+        style={styles.container}
+      >
+        <View style={styles.config}>
+          <View  style={{marginRight: 100}}>
+            <DropDownLanguage
+              isColor={dark_mode?.dark_mode}
+              setShowLanguage={() => ""}
+            />
+          </View>
+            <TouchableOpacity
+              onPress={() => {
+                _handle_dark_mode();
+              }}
+              accessible
+              accessibilityLabel={
+                dark_mode?.dark_mode
+                  ? i18n.t("login.themeLight")
+                  : i18n.t("login.themeDark")
+              }
+            >
+              <Icon
+                type={dark_mode_value ? "ionicon" : "font-awesome-5"}
+                name={dark_mode_value ? "sunny-sharp" : "moon"}
+                color="white"
+                solid={true}
+                style={{ marginTop: 15, marginRight: 20 }}
+                tvParallaxProperties={null}
+              />
+            </TouchableOpacity>
+        </View>
+        <KeyboardAvoidingView
+          behavior={Platform.OS == 'android' ? 'height' : 'padding'}
+        >
+          <Text style={styles.labelTitle} >{i18n.t('createAccount.label')}</Text>
+        </KeyboardAvoidingView>
       </SafeAreaView>
     </Background>
   );
 };
+
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
+  setShowDarkMode: (value: boolean) => {
+    dispatch(setDarkMode(value));
+  },
+})
 
 const props = (state: any) => {
   const dark_mode = state.darkModeReducer;
@@ -93,4 +155,4 @@ const props = (state: any) => {
   return props;
 };
 
-export default connect(props)(CreateAccount);
+export default connect(props, mapDispatchToProps)(CreateAccount);

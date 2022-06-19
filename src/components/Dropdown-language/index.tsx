@@ -42,10 +42,11 @@ const DropDownLanguage = (props: IDropDown) => {
     },
   ];
 
+
   const find_idx = languages.findIndex(
     (x) => x.surname == language_redux?.surname
   );
-
+  
   return (
     <SelectDropdown
       data={languages}
