@@ -22,14 +22,27 @@ export const pt = {
     },
     createAccount: {
         label: 'Criar uma conta',
+        username: 'Nome é obrigatório!',
+        ageRequired: 'Idade é obrigatória!',
         cpfRequired: 'CPF é obrigatório!',
+        placeholderUsername: 'nome...',
+        placeholderAge: 'idade...',
+        placeholderCpf: 'cpf...',
+        placeholderSalary: 'renda mensal...',
+        placeholderSmartphone: 'telefone...',
         smartphoneRequired: 'Numéro de telefone é obrigatório!',
         placeholderEmail: 'email...',
         placeholderPassword: 'senha...',
         emailRequired: 'O email é obrigatório!',
         typeEmail: 'Digite um email válido',
         passwordRequired: 'A senha é obrigatória!',
-        minPassword: 'A senha deve conter pelo menos 6 dígitos',
+        placeholderPasswordConfirmed: 'senha de confirmação...',
+        passwordConfirmed: 'As senhas devem ser iguais!',
+        minPassword: 'A senha deve conter pelo menos 6 dígitos!',
+        btnCreate: 'Cadastrar',
+        cpfValidate: 'CPF deve conter 6 dígitos!',
+        smartValidate: 'Celular precisa ter 6 dígitos!',
+        labelBack: 'Já tenho uma conta'
     }
 }
 
@@ -57,13 +70,26 @@ export const en = {
     },
     createAccount: {
         label: 'Create Account',
+        username: 'Username is required!',
+        ageRequired: 'Age is required!',
         cpfRequired: 'CPF is required!',
+        placeholderUsername: 'username...',
+        placeholderAge: 'age...',
+        placeholderSalary: 'monthly income...',
+        placeholderSmartphone: 'smartphone...',
+        placeholderCpf: 'cpf...',
         smartphoneRequired: 'Smartphone is required!',
         placeholderEmail: 'email...',
         placeholderPassword: 'password...',
+        placeholderPasswordConfirmed: 'confirmation password...',
         emailRequired: 'Email is required!',
         typeEmail: 'Enter a valid email address!',
         passwordRequired: 'Password is required!',
+        passwordConfirmed: 'Passwords must be the same!',
         minPassword: 'The password must contain at least 6 digits',
+        btnCreate: 'Register',
+        cpfValidate: 'CPF must contain 6 digits!',
+        smartValidate: 'Smartphone must contain 6 digits!',
+        labelBack: 'I already have an account'
     }
 }

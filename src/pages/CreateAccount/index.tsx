@@ -1,8 +1,15 @@
 import React, { useState } from "react";
 import { Icon, Input } from "react-native-elements";
-import { View, Text, Keyboard, KeyboardAvoidingView, Platform } from "react-native";
+import {
+  View,
+  Text,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import Background from "../../components/Background";
 import { ButtonIcon } from "../../components/ButtonIcon";
@@ -25,12 +32,17 @@ import { connect } from "react-redux";
 import { ILanguage } from "../../redux/actions/language-action";
 import { AppDispatch } from "../../redux/store";
 import { setDarkMode } from "../../redux/actions/dark-mode-action";
+import { useNavigation } from "@react-navigation/native";
 
 type Inputs = {
+  username: string;
   email: string;
+  age: number;
+  monthlyIncome: number;
   cpf: string;
   smartphone: number;
   password: string;
+  passwordConfirmation: string;
 };
 
 type ICreateAccount = {
@@ -47,6 +59,8 @@ type ICreateAccount = {
 const CreateAccount = (props: ICreateAccount) => {
   const { dark_mode, setShowDarkMode, language_redux, setShowLanguage } = props;
 
+  const navigation = useNavigation();
+
   i18n.fallbacks = true;
   i18n.translations = { pt, en };
   i18n.locale = language_redux.language_redux
@@ -54,24 +68,31 @@ const CreateAccount = (props: ICreateAccount) => {
     : Localization.locale;
 
   const fieldsValidationSchema = yup.object().shape({
+    username: yup.string().required(i18n.t("createAccount.username")),
     email: yup
       .string()
       .required(i18n.t("createAccount.emailRequired"))
       .email(i18n.t("createAccount.typeEmail")),
+    age: yup.number().required(i18n.t("createAccount.ageRequired")),
+    monthlyIncome: yup.number().notRequired(),
     cpf: yup
       .string()
       .required(i18n.t("createAccount.cpfRequired"))
-      .min(11)
-      .max(11),
+      .min(11, i18n.t("createAccount.cpfValidate"))
+      .max(11, i18n.t("createAccount.cpfValidate")),
     smartphone: yup
-      .number()
+      .string()
       .required(i18n.t("createAccount.smartphoneRequired"))
-      .min(11)
-      .max(11),
+      .min(11, i18n.t("createAccount.smartValidate"))
+      .max(11, i18n.t("createAccount.smartValidate")),
     password: yup
       .string()
       .required(i18n.t("createAccount.passwordRequired"))
-      .min(6, i18n.t("createAccount.login.minPassword")),
+      .min(6, i18n.t("createAccount.minPassword")),
+    passwordConfirmation: yup
+      .string()
+      .required(i18n.t("createAccount.passwordRequired"))
+      .oneOf([yup.ref("password")], i18n.t("createAccount.passwordConfirmed")),
   });
 
   const [visibilityPassword, setVisibilityPassword] = useState<boolean>(false);
@@ -88,6 +109,12 @@ const CreateAccount = (props: ICreateAccount) => {
     console.log(data);
   };
 
+  const changeVisibilityPassword = () => {
+    !visibilityPassword
+      ? setVisibilityPassword(true)
+      : setVisibilityPassword(false);
+  };
+
   const _handle_dark_mode = () => {
     !dark_mode_value ? setDarkMode(true) : setDarkMode(false);
     if (setShowDarkMode) {
@@ -97,16 +124,15 @@ const CreateAccount = (props: ICreateAccount) => {
 
   return (
     <Background dark_mode={dark_mode?.dark_mode}>
-      <SafeAreaView
-        style={styles.container}
-      >
-        <View style={styles.config}>
-          <View  style={{marginRight: 100}}>
-            <DropDownLanguage
-              isColor={dark_mode?.dark_mode}
-              setShowLanguage={() => ""}
-            />
-          </View>
+      <SafeAreaView style={styles.container}>
+        <KeyboardAwareScrollView>
+          <View style={styles.config}>
+            <View style={{ marginRight: 100 }}>
+              <DropDownLanguage
+                isColor={dark_mode?.dark_mode}
+                setShowLanguage={() => ""}
+              />
+            </View>
             <TouchableOpacity
               onPress={() => {
                 _handle_dark_mode();
@@ -127,12 +153,315 @@ const CreateAccount = (props: ICreateAccount) => {
                 tvParallaxProperties={null}
               />
             </TouchableOpacity>
-        </View>
-        <KeyboardAvoidingView
-          behavior={Platform.OS == 'android' ? 'height' : 'padding'}
-        >
-          <Text style={styles.labelTitle} >{i18n.t('createAccount.label')}</Text>
-        </KeyboardAvoidingView>
+          </View>
+          <TouchableOpacity
+            style={{ marginRight: "40%" }}
+            onPress={() => navigation.navigate("Login")}
+          >
+            <View style={{ flexDirection: "row", justifyContent: "center" }}>
+              <Text style={[styles.labelTitle, { fontSize: 16 }]}>
+                {i18n.t("createAccount.labelBack")}
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <Text style={styles.labelTitle}>{i18n.t("createAccount.label")}</Text>
+          <View>
+            <View style={styles.inputView}>
+              <Controller
+                name="username"
+                control={control}
+                render={(props) => (
+                  <Input
+                    placeholder={i18n.t("createAccount.placeholderUsername")}
+                    inputStyle={{
+                      color: "white",
+                      fontFamily: font.fonts.title400,
+                    }}
+                    leftIcon={{
+                      type: "material",
+                      name: "person",
+                      color: "white",
+                    }}
+                    errorStyle={{
+                      color: "#ff4d4d",
+                      fontSize: 16,
+                      fontFamily: font.fonts.title400,
+                    }}
+                    errorMessage={errors.username?.message}
+                    onChangeText={(value) => {
+                      props.field.onChange(value);
+                    }}
+                    accessible
+                    accessibilityLabel={i18n.t(
+                      "createAccount.placeholderUsernamel"
+                    )}
+                  />
+                )}
+              />
+              <Controller
+                name="email"
+                control={control}
+                render={(props) => (
+                  <Input
+                    placeholder={i18n.t("login.placeholderEmail")}
+                    inputStyle={{
+                      color: "white",
+                      fontFamily: font.fonts.title400,
+                    }}
+                    keyboardType={"email-address"}
+                    leftIcon={{
+                      type: "material",
+                      name: "email",
+                      color: "white",
+                    }}
+                    errorStyle={{
+                      color: "#ff4d4d",
+                      fontSize: 16,
+                      fontFamily: font.fonts.title400,
+                    }}
+                    errorMessage={errors.email?.message}
+                    onChangeText={(value) => {
+                      props.field.onChange(value);
+                    }}
+                    accessible
+                    accessibilityLabel={i18n.t("login.placeholderEmail")}
+                  />
+                )}
+              />
+              <Controller
+                name="age"
+                control={control}
+                render={(props) => (
+                  <Input
+                    placeholder={i18n.t("createAccount.placeholderAge")}
+                    inputStyle={{
+                      color: "white",
+                      fontFamily: font.fonts.title400,
+                    }}
+                    leftIcon={{
+                      type: "material",
+                      name: "circle",
+                      color: "white",
+                    }}
+                    errorStyle={{
+                      color: "#ff4d4d",
+                      fontSize: 16,
+                      fontFamily: font.fonts.title400,
+                    }}
+                    errorMessage={errors.age?.message}
+                    onChangeText={(value) => {
+                      props.field.onChange(value);
+                    }}
+                    keyboardType={"numeric"}
+                    accessible
+                    accessibilityLabel={i18n.t("createAccount.placeholderAge")}
+                  />
+                )}
+              />
+              <Controller
+                name="cpf"
+                control={control}
+                render={(props) => (
+                  <Input
+                    placeholder={i18n.t("createAccount.placeholderCpf")}
+                    inputStyle={{
+                      color: "white",
+                      fontFamily: font.fonts.title400,
+                    }}
+                    leftIcon={{
+                      type: "material",
+                      name: "assignment-ind",
+                      color: "white",
+                    }}
+                    errorStyle={{
+                      color: "#ff4d4d",
+                      fontSize: 16,
+                      fontFamily: font.fonts.title400,
+                    }}
+                    errorMessage={errors.cpf?.message}
+                    onChangeText={(value) => {
+                      props.field.onChange(value);
+                    }}
+                    keyboardType={"numeric"}
+                    accessible
+                    accessibilityLabel={i18n.t("createAccount.placeholderCpf")}
+                  />
+                )}
+              />
+              <Controller
+                name="smartphone"
+                control={control}
+                render={(props) => (
+                  <Input
+                    placeholder={i18n.t("createAccount.placeholderSmartphone")}
+                    inputStyle={{
+                      color: "white",
+                      fontFamily: font.fonts.title400,
+                    }}
+                    leftIcon={{
+                      type: "material",
+                      name: "smartphone",
+                      color: "white",
+                    }}
+                    errorStyle={{
+                      color: "#ff4d4d",
+                      fontSize: 16,
+                      fontFamily: font.fonts.title400,
+                    }}
+                    errorMessage={errors.smartphone?.message}
+                    onChangeText={(value) => {
+                      props.field.onChange(value);
+                    }}
+                    keyboardType={"numeric"}
+                    accessible
+                    accessibilityLabel={i18n.t(
+                      "createAccount.placeholderSmartphone"
+                    )}
+                  />
+                )}
+              />
+              <Controller
+                name="monthlyIncome"
+                control={control}
+                render={(props) => (
+                  <Input
+                    placeholder={i18n.t("createAccount.placeholderSalary")}
+                    inputStyle={{
+                      color: "white",
+                      fontFamily: font.fonts.title400,
+                    }}
+                    leftIcon={{
+                      type: "material",
+                      name: "attach-money",
+                      color: "white",
+                    }}
+                    errorStyle={{
+                      color: "#ff4d4d",
+                      fontSize: 16,
+                      fontFamily: font.fonts.title400,
+                    }}
+                    // errorMessage={}
+                    onChangeText={(value) => {
+                      props.field.onChange(value);
+                    }}
+                    keyboardType={"numeric"}
+                    accessible
+                    accessibilityLabel={i18n.t(
+                      "createAccount.placeholderSalary"
+                    )}
+                  />
+                )}
+              />
+              <Controller
+                name="password"
+                control={control}
+                render={(props) => (
+                  <Input
+                    placeholder={i18n.t("createAccount.placeholderPassword")}
+                    inputStyle={{
+                      color: "white",
+                      fontFamily: font.fonts.title400,
+                    }}
+                    secureTextEntry={!visibilityPassword ? true : false}
+                    rightIcon={{
+                      type: "material",
+                      name: `${
+                        !visibilityPassword ? "visibility-off" : "visibility"
+                      }`,
+                      color: "white",
+                      onPress: () => {
+                        changeVisibilityPassword();
+                      },
+                    }}
+                    leftIcon={{
+                      type: "material",
+                      name: "lock",
+                      color: "white",
+                      onPress: () => {
+                        changeVisibilityPassword();
+                      },
+                    }}
+                    errorStyle={{
+                      color: "#ff4d4d",
+                      fontSize: 16,
+                      fontFamily: font.fonts.title400,
+                    }}
+                    errorMessage={errors.password?.message}
+                    onChangeText={(value) => {
+                      props.field.onChange(value);
+                    }}
+                    accessible
+                    accessibilityLabel={i18n.t(
+                      "createAccount.placeholderPassword"
+                    )}
+                  />
+                )}
+              />
+              <Controller
+                name="passwordConfirmation"
+                control={control}
+                render={(props) => (
+                  <Input
+                    placeholder={i18n.t(
+                      "createAccount.placeholderPasswordConfirmed"
+                    )}
+                    inputStyle={{
+                      color: "white",
+                      fontFamily: font.fonts.title400,
+                    }}
+                    secureTextEntry={!visibilityPassword ? true : false}
+                    rightIcon={{
+                      type: "material",
+                      name: `${
+                        !visibilityPassword ? "visibility-off" : "visibility"
+                      }`,
+                      color: "white",
+                      onPress: () => {
+                        changeVisibilityPassword();
+                      },
+                    }}
+                    leftIcon={{
+                      type: "material",
+                      name: "lock",
+                      color: "white",
+                      onPress: () => {
+                        changeVisibilityPassword();
+                      },
+                    }}
+                    errorStyle={{
+                      color: "#ff4d4d",
+                      fontSize: 16,
+                      fontFamily: font.fonts.title400,
+                    }}
+                    errorMessage={errors.passwordConfirmation?.message}
+                    onChangeText={(value) => {
+                      props.field.onChange(value);
+                    }}
+                    accessible
+                    accessibilityLabel={i18n.t(
+                      "createAccount.placeholderPasswordConfirmed"
+                    )}
+                  />
+                )}
+              />
+            </View>
+            <View style={{ alignItems: "center" }}>
+              <View style={styles.buttonView}>
+                <ButtonIcon
+                  color="white"
+                  type="material"
+                  icon="login"
+                  height={40}
+                  onPress={handleSubmit(onSubmit)}
+                  title={i18n.t("createAccount.btnCreate")}
+                  img={0}
+                  accessibilityLabel={i18n.t("createAccount.btnCreate")}
+                />
+              </View>
+            </View>
+            <ListDivider />
+          </View>
+        </KeyboardAwareScrollView>
       </SafeAreaView>
     </Background>
   );
@@ -142,7 +471,7 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
   setShowDarkMode: (value: boolean) => {
     dispatch(setDarkMode(value));
   },
-})
+});
 
 const props = (state: any) => {
   const dark_mode = state.darkModeReducer;

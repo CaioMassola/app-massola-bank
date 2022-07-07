@@ -46,7 +46,7 @@ type ILogin = {
 };
 
 const Login = (props: ILogin) => {
-  const { dark_mode, setShowDarkMode, language_redux, setShowLanguage } = props;
+  const { dark_mode, setShowDarkMode, language_redux } = props;
 
   const navigation = useNavigation();
 

@@ -17,5 +17,18 @@ export const styles = StyleSheet.create({
     fontSize: 32,
     marginTop: 40,
     textAlign: 'center',
-  }
+  },
+  inputView: {
+    marginTop: 10,
+    width: '90%',
+    marginLeft: 15
+  },
+  buttonView: {
+    width: '45%',
+    height: 42,
+    marginTop: 10,
+    borderRadius: 30,
+    borderWidth: 1,
+    borderColor: 'black',
+  },
 });
