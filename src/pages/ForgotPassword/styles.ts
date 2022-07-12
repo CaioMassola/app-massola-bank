@@ -4,8 +4,8 @@ import { font } from '../../global/font';
 export const styles = StyleSheet.create({
   container: {
     flex: 1
-  },
-  config: {
+},
+config: {
     marginTop: 10,
     height: 60,
     flexDirection: 'row',
@@ -18,14 +18,14 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   inputView: {
-    marginTop: 10,
+    marginTop: 50,
     width: '90%',
     marginLeft: 15
   },
   buttonView: {
     width: '45%',
     height: 42,
-    marginTop: 10,
+    marginTop: 60,
     borderRadius: 30,
     borderWidth: 1,
     borderColor: 'black',

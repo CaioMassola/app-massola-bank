@@ -1,14 +1,8 @@
 import React, { useState } from "react";
 import { Icon, Input } from "react-native-elements";
-import {
-  View,
-  Text,
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-} from "react-native";
+import { View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import Background from "../../components/Background";
@@ -16,7 +10,6 @@ import { ButtonIcon } from "../../components/ButtonIcon";
 import { ListDivider } from "../../components/ListDivider";
 import DropDownLanguage from "../../components/Dropdown-language";
 
-import Logo from "../../assets/svg/Vector.svg";
 import { font } from "../../global/font";
 import { styles } from "./styles";
 
@@ -105,7 +98,7 @@ const CreateAccount = (props: ICreateAccount) => {
     formState: { errors },
   } = useForm<Inputs>({ resolver: yupResolver(fieldsValidationSchema) });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: Inputs) => {
     console.log(data);
   };
 
@@ -123,7 +116,7 @@ const CreateAccount = (props: ICreateAccount) => {
   };
 
   return (
-    <Background dark_mode={dark_mode?.dark_mode}>
+    <Background>
       <SafeAreaView style={styles.container}>
         <KeyboardAwareScrollView>
           <View style={styles.config}>
@@ -154,17 +147,32 @@ const CreateAccount = (props: ICreateAccount) => {
               />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            style={{ marginRight: "40%" }}
-            onPress={() => navigation.navigate("Login")}
-          >
-            <View style={{ flexDirection: "row", justifyContent: "center" }}>
-              <Text style={[styles.labelTitle, { fontSize: 16 }]}>
+          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                marginLeft: 30,
+                marginTop: 20,
+              }}
+            >
+              <Icon
+                name="arrow-back"
+                type="material"
+                size={18}
+                color={"white"}
+                tvParallaxProperties={null}
+              />
+              <Text
+                style={[styles.labelTitle, { fontSize: 16, marginLeft: 10 }]}
+              >
                 {i18n.t("createAccount.labelBack")}
               </Text>
             </View>
           </TouchableOpacity>
-          <Text style={styles.labelTitle}>{i18n.t("createAccount.label")}</Text>
+          <Text style={[styles.labelTitle, { marginTop: 40 }]}>
+            {i18n.t("createAccount.label")}
+          </Text>
           <View>
             <View style={styles.inputView}>
               <Controller
@@ -450,7 +458,7 @@ const CreateAccount = (props: ICreateAccount) => {
                 <ButtonIcon
                   color="white"
                   type="material"
-                  icon="login"
+                  icon="check"
                   height={40}
                   onPress={handleSubmit(onSubmit)}
                   title={i18n.t("createAccount.btnCreate")}

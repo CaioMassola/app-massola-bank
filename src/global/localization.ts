@@ -19,6 +19,7 @@ export const pt = {
         themeDark: 'Tema Escuro',
         themeLight: 'Tema Claro',
         accGoogle: 'Entre com Google',
+        bioLogin: 'Login com biometria digital'
     },
     createAccount: {
         label: 'Criar uma conta',
@@ -42,7 +43,18 @@ export const pt = {
         btnCreate: 'Cadastrar',
         cpfValidate: 'CPF deve conter 6 dígitos!',
         smartValidate: 'Celular precisa ter 6 dígitos!',
-        labelBack: 'Já tenho uma conta'
+        labelBack: 'Voltar'
+    },
+    forgotPassword: {
+        placeholderEmail: 'email...',
+        emailRequired: 'O email é obrigatório!',
+        typeEmail: 'Digite um email válido',
+        label: 'Recuperar a senha',
+        labelBack: 'Voltar',
+        btnCreate: 'Recuperar',
+        helpMsg: 'Informe o email para a recuperar a senha',
+        msgForgotPassword: 'Caso o email exista, enviaremos um email para realizar a troca da senha!',
+
     }
 }
 
@@ -90,6 +102,17 @@ export const en = {
         btnCreate: 'Register',
         cpfValidate: 'CPF must contain 6 digits!',
         smartValidate: 'Smartphone must contain 6 digits!',
-        labelBack: 'I already have an account'
+        labelBack: 'Back'
+    },
+    forgotPassword: {
+        placeholderEmail: 'email...',
+        emailRequired: 'Email is required!',
+        typeEmail: 'Enter a valid email address!',
+        label: 'Recover password',
+        labelBack: 'Back',
+        btnCreate: 'To recover',
+        helpMsg: 'Enter the email to recover the password',
+        msgForgotPassword: 'If the email exists, send an email to change the password!',
+
     }
 }

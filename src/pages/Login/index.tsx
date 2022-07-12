@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Icon, Input } from "react-native-elements";
 import { View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 import Background from "../../components/Background";
 import { ButtonIcon } from "../../components/ButtonIcon";
@@ -26,6 +26,7 @@ import { AppDispatch } from "../../redux/store";
 import { setDarkMode } from "../../redux/actions/dark-mode-action";
 import { ILanguage } from "../../redux/actions/language-action";
 import { useNavigation } from "@react-navigation/native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const google = require("../../assets/google.png");
 
@@ -95,9 +96,9 @@ const Login = (props: ILogin) => {
   };
 
   return (
-    <Background dark_mode={dark_mode?.dark_mode}>
+    <Background>
       <SafeAreaView>
-        <ScrollView>
+        <KeyboardAwareScrollView>
           <View style={styles.container}>
             <View style={styles.config}>
               <View style={{ marginLeft: 15 }}>
@@ -227,7 +228,7 @@ const Login = (props: ILogin) => {
               </View>
             </View>
             <TouchableOpacity
-              onPress={() => console.log("esqueci senha")}
+              onPress={() => navigation.navigate("ForgotPassword")}
               accessible
               accessibilityLabel={i18n.t("login.forgotPassword")}
             >
@@ -270,7 +271,7 @@ const Login = (props: ILogin) => {
               </View>
             </View>
           </View>
-        </ScrollView>
+        </KeyboardAwareScrollView>
       </SafeAreaView>
     </Background>
   );
