@@ -1,20 +1,40 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { AppRegistry, StatusBar, Text } from "react-native";
+import { Righteous_400Regular } from "@expo-google-fonts/righteous";
+import { Inter_300Light } from "@expo-google-fonts/inter";
+import { useFonts } from "expo-font";
 
-export default function App() {
+import AppLoading from "expo-app-loading";
+import Routes from "./src/routes";
+import { Provider } from "react-redux";
+import { persistor, store } from "./src/redux/store";
+import { PersistGate } from "redux-persist/integration/react";
+import { expo } from "./app.json";
+
+const App = () => {
+  const [fontsLoaded] = useFonts({
+    Righteous_400Regular,
+    Inter_300Light,
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <StatusBar
+          barStyle="light-content"
+          backgroundColor="transparent"
+          translucent
+        />
+        <Routes />
+      </PersistGate>
+    </Provider>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+AppRegistry.registerComponent(expo.name, () => App);
+
+export default App;
