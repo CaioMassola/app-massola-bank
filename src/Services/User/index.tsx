@@ -1,5 +1,4 @@
-import axios, { AxiosResponseHeaders } from "axios";
-import { Alert } from "react-native";
+import axios, {AxiosResponseHeaders } from "axios";
 import { base_url } from "../../global/env";
 
 const prefix = "user";
@@ -25,7 +24,7 @@ class UserService {
       });
       return response;
     } catch (e: any) {
-      console.log(e);
+      return e
     }
   }
 }

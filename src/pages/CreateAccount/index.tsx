@@ -51,9 +51,16 @@ type ICreateAccount = {
   setShowLanguage?: (value: ILanguage) => void;
 };
 
+type errors = {
+  field: string;
+  message: string;
+  rule: string;
+}
+
 type IModal = {
   message: string;
   error: boolean;
+  errors?: errors[];
 };
 
 const CreateAccount = (props: ICreateAccount) => {
@@ -127,29 +134,33 @@ const CreateAccount = (props: ICreateAccount) => {
     userService
       .create(payload, location)
       .then((x) => {
-        if (x?.data.code) {
+        if(x?.data) {
           // Alert.alert(x.data.message);
-          setDataModal({ message: x?.data.message, error: false });
+          setDataModal({ message: x.data.message, error: false });
           //aqui
           setOpenModal(true);
           setTimeout(() => {
             setBtnReload(false);
           }, 2500);
-        } else {
-          // Alert.alert(x?.data.message);
-          console.log("aqui");
-          setDataModal({ message: x?.data.message, error: true });
+        }
+        else {
+          setDataModal({message: '', error: true, errors: x.response.data.message})
           setOpenModal(true);
           setTimeout(() => {
             setBtnReload(false);
-          }, 2500);
+          }, 3000);
         }
       })
       .catch(() => {
         Alert.alert(`${i18n.t("createAccount.anyError")}`);
         setTimeout(() => {
           setBtnReload(false);
-        }, 2500);
+        }, 3000);
+      })
+      .finally(() => {
+        setTimeout(() => {
+          setBtnReload(false);
+        }, 3000);
       });
   };
 
@@ -531,6 +542,7 @@ const CreateAccount = (props: ICreateAccount) => {
         {openModal && (
           <ModalMessage
             message={dataModal?.message}
+            errors={dataModal?.errors}
             error={dataModal ? dataModal.error : true}
           />
         )}

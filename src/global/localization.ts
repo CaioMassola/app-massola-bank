@@ -45,6 +45,8 @@ export const pt = {
     smartValidate: "Celular precisa ter 6 dígitos!",
     labelBack: "Voltar",
     anyError: "Erro inesperado!",
+    titleModal: "Desculpa!",
+    btnModalClose: "Fechar"
   },
   forgotPassword: {
     placeholderEmail: "email...",
@@ -105,6 +107,8 @@ export const en = {
     smartValidate: "Smartphone must contain 6 digits!",
     labelBack: "Back",
     anyError: "Unexpected error!",
+    titleModal: "Sorry!",
+    btnModalClose: "Close"
   },
   forgotPassword: {
     placeholderEmail: "email...",
