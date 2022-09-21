@@ -30,6 +30,7 @@ const App = () => {
   }, [fontsLoaded]);
 
   if (!fontsLoaded) {
+    console.log("nao carregou");
     return null;
   }
 
