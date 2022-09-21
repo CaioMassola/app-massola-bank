@@ -1,10 +1,9 @@
-import React from "react";
-import { AppRegistry, StatusBar, Text } from "react-native";
+import React, { useCallback, useEffect } from "react";
+import { AppRegistry, StatusBar, Text, View } from "react-native";
 import { Righteous_400Regular } from "@expo-google-fonts/righteous";
 import { Inter_300Light } from "@expo-google-fonts/inter";
 import { useFonts } from "expo-font";
-
-import AppLoading from "expo-app-loading";
+import * as SplashScreen from "expo-splash-screen";
 import Routes from "./src/routes";
 import { Provider } from "react-redux";
 import { persistor, store } from "./src/redux/store";
@@ -17,8 +16,21 @@ const App = () => {
     Inter_300Light,
   });
 
+  useEffect(() => {
+    async function prepare() {
+      await SplashScreen.preventAutoHideAsync();
+    }
+    prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
   if (!fontsLoaded) {
-    return <AppLoading />;
+    return null;
   }
 
   return (
@@ -29,7 +41,9 @@ const App = () => {
           backgroundColor="transparent"
           translucent
         />
-        <Routes />
+        <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+          <Routes />
+        </View>
       </PersistGate>
     </Provider>
   );
